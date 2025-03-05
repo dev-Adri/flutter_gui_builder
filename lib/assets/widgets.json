@@ -1,0 +1,13 @@
+{
+    "widgets": [
+        "Icon Button",
+        "Icon",
+        "Container",
+        "Text",
+        "Image",
+        "Sized Box",
+        "Column",
+        "Row",
+        "Single Child ScrollView"
+    ]
+}
