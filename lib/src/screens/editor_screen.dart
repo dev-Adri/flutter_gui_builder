@@ -1,13 +1,12 @@
 // ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 
 import '../widgets/widget_button.dart';
+import '../widgets/screen_stack.dart';
 import '../widgets/screen_controller.dart';
 import '../helpers/database/json_loader.dart';
 // import '../helpers/misc/virtual_widget.dart' as vw;
-
-import '../widgets/screen_stack.dart';
 
 String? currentWidgetFocused;
 
@@ -21,6 +20,8 @@ class EditorScreen extends StatefulWidget {
 }
 
 class _EditorScreenState extends State<EditorScreen> {
+  final transformationController = TransformationController();
+
   // Create a GlobalKey to access the state of ScreenController.
   final GlobalKey<ScreenControllerState> _screenControllerKey =
       GlobalKey<ScreenControllerState>();
@@ -59,11 +60,31 @@ class _EditorScreenState extends State<EditorScreen> {
                   child: ScreenController(key: _screenControllerKey),
                 ),
                 Expanded(
-                  flex: 12,
-                  child: Center(
-                      child: ScreenStack(
-                          changeScreenSizeNotif: changeScreenSizeNotif)),
-                )
+                    flex: 12,
+                    child: Listener(
+                      onPointerMove: (PointerMoveEvent event) {
+                        if (event.buttons & kMiddleMouseButton != 0) {
+                          final delta = event
+                              .delta; // Movement delta in screen coordinates
+                          final currentMatrix = transformationController.value;
+                          // Pre-multiply with translation to pan in parent's coordinate system
+                          final translationMatrix =
+                              Matrix4.translationValues(delta.dx, delta.dy, 0);
+                          transformationController.value =
+                              translationMatrix * currentMatrix;
+                        }
+                      },
+                      child: InteractiveViewer(
+                        minScale: 0.01,
+                        maxScale: 10.0,
+                        transformationController: transformationController,
+                        panEnabled: false, // Disable default panning
+                        child: Center(
+                          child: ScreenStack(
+                              changeScreenSizeNotif: changeScreenSizeNotif),
+                        ),
+                      ),
+                    ))
               ],
             ),
           ),
