@@ -13,7 +13,18 @@ class ScreenStack extends StatefulWidget {
   State<ScreenStack> createState() => _ScreenStackState();
 }
 
+// TODO: Figure out a way to generate widgets inside widgets
+// TODO: Create a 'history' file so that there are undos and redoes allowed
+// TODO: Make each widget clickable and draggable
+// TODO: Clicked widgets should show their properties, and they can be changed
+// TODO: Changing properties refreshes the screen_stack
+
 class _ScreenStackState extends State<ScreenStack> {
+  Widget tree = Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Center(child: Text("Empty screen")),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -30,13 +41,17 @@ class _ScreenStackState extends State<ScreenStack> {
         Positioned.fill(
           child: DragTarget<vw.VirtualWidget>(
             onAcceptWithDetails: (details) {
-              print("Accepted: ${details.data.generateCode()}");
+              setState(() {
+                tree = Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: details.data.generate());
+              });
             },
-            onWillAcceptWithDetails: (details) {
-              print("Will accept: ${details.data}");
-              return true;
-            },
-            builder: (context, candidateData, rejectedData) => Placeholder(),
+            // onWillAcceptWithDetails: (details) {
+            //   print("Will accept: ${details.data}");
+            //   return true;
+            // },
+            builder: (context, candidateData, rejectedData) => tree,
           ),
         )
       ],

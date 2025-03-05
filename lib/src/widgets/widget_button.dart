@@ -44,10 +44,9 @@ class _WidgetButtonState extends State<WidgetButton> {
             borderRadius: BorderRadius.circular(4.0),
           ),
           child: Center(
-            child: Text(
-              widget.name,
-              textAlign: TextAlign.center,
-            ),
+            child: Text(widget.name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.black)),
           ),
         ),
       ),

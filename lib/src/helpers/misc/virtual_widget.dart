@@ -1,3 +1,6 @@
+import 'lookup.dart';
+import 'package:flutter/material.dart';
+
 enum WidgetType {
   button,
   text,
@@ -28,12 +31,18 @@ class VirtualWidget {
 
   VirtualWidget(this.type);
 
+  Widget generate() {
+    return lookup[type]!();
+  }
+
   // Generates code for a given widget type based on some parameters
   String generateCode() {
     String defaultChildType = "child";
 
     // ? Testing this variable (default -> empty)
-    List<String> specialCases = ["mainAxisAlignment: MainAxisAlignment.center"];
+    List<String> specialCases = [
+      /*"mainAxisAlignment: MainAxisAlignment.center"*/
+    ];
 
     if (childrenList.contains(type)) {
       defaultChildType = "children";
