@@ -1,13 +1,13 @@
 {
-    "widgets": [
-        "Icon Button",
-        "Icon",
-        "Container",
-        "Text",
-        "Image",
-        "Sized Box",
-        "Column",
-        "Row",
-        "Single Child ScrollView"
-    ]
+    "widgets": {
+        "Icon Button": "iconButton",
+        "Icon": "icon",
+        "Container": "container",
+        "Text": "text",
+        "Image": "image",
+        "Sized Box": "sizedBox",
+        "Column": "column",
+        "Row": "row",
+        "Single Child ScrollView": "singleChildScrollView"
+    }
 }

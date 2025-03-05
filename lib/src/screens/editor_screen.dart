@@ -6,6 +6,7 @@ import '../widgets/widget_button.dart';
 import '../widgets/screen.dart';
 import '../widgets/screen_controller.dart';
 import '../helpers/database/json_loader.dart';
+import '../helpers/misc/virtual_widget.dart' as vw;
 
 String? currentWidgetFocused;
 
@@ -71,12 +72,12 @@ class _EditorScreenState extends State<EditorScreen> {
                         // TODO: on builder, instead of 'placeholder' add the
                         // custom data structure so that it accepts widgets
                         Positioned.fill(
-                          child: DragTarget<String>(
+                          child: DragTarget<vw.VirtualWidget>(
                             onAcceptWithDetails: (details) {
-                              print("Accepted: ${details.data}");
+                              print("Accepted: ${details.data.generateCode()}");
                             },
-                            onWillAcceptWithDetails: (data) {
-                              print("Will accept: $data");
+                            onWillAcceptWithDetails: (details) {
+                              print("Will accept: ${details.data}");
                               return true;
                             },
                             builder: (context, candidateData, rejectedData) =>
@@ -156,27 +157,27 @@ class WidgetList extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.only(top: 20),
               child: SingleChildScrollView(
-                child: FutureBuilder<List>(
+                child: FutureBuilder<Map<String, String>>(
                   future: getWidgets("lib/assets/widgets.json"),
                   builder: (BuildContext context,
-                      AsyncSnapshot<List<dynamic>> snapshot) {
+                      AsyncSnapshot<Map<String, String>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(
                           child:
                               Text("Error loading widgets: ${snapshot.error}"));
-                    } else if (snapshot.data != null) {
-                      final widgetNames = snapshot.data!;
+                    } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                      final widgetMap = snapshot.data!;
                       return Wrap(
                         spacing: 16.0,
                         runSpacing: 16.0,
                         alignment: WrapAlignment.start,
-                        runAlignment: WrapAlignment.start,
-                        crossAxisAlignment: WrapCrossAlignment.start,
-                        children: widgetNames
-                            .map((widgetName) =>
-                                WidgetButton(name: widgetName.toString()))
+                        children: widgetMap.entries
+                            .map((entry) => WidgetButton(
+                                  name: entry.key, // "Icon Button"
+                                  id: entry.value, // "iconButton"
+                                ))
                             .toList(),
                       );
                     } else {

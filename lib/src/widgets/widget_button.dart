@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../helpers/misc/virtual_widget.dart' as vw;
+
 class WidgetButton extends StatefulWidget {
   final String name;
+  final String id;
 
-  const WidgetButton({super.key, required this.name});
+  const WidgetButton({super.key, required this.name, required this.id});
 
   @override
   State<WidgetButton> createState() => _WidgetButtonState();
@@ -24,9 +27,9 @@ class _WidgetButtonState extends State<WidgetButton> {
       cursor: SystemMouseCursors.move,
       onEnter: (_) => _setHover(true),
       onExit: (_) => _setHover(false),
-      child: Draggable<String>(
-        // Data carried during drag (the button's name)
-        data: "I am a button!!",
+      child: Draggable<vw.VirtualWidget>(
+        // Data carried during drag
+        data: vw.VirtualWidget(vw.fromStr(widget.id)),
         // "Ghost" widget shown during dragging
         feedback: _ButtonFeedback(name: widget.name),
         // Placeholder shown in original spot during dragging

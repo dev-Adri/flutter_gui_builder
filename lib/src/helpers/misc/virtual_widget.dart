@@ -1,4 +1,15 @@
-enum WidgetType { button, text, image, container, row, column, sizedBox }
+enum WidgetType {
+  button,
+  text,
+  image,
+  container,
+  row,
+  column,
+  sizedBox,
+  iconButton,
+  singleChildScrollView,
+  icon
+}
 
 extension Parse on WidgetType {
   String toStr() {

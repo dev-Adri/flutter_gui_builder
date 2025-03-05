@@ -2,28 +2,32 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:developer';
 
-Future<List> getWidgets(String path) async {
-  // Make the function async
+Future<Map<String, String>> getWidgets(String path) async {
   try {
     final file = File(path);
-    final fileContent = await file.readAsString(); // AWAIT the file read
+    final fileContent = await file.readAsString();
     final jsonData = jsonDecode(fileContent);
 
     if (jsonData is Map && jsonData.containsKey('widgets')) {
-      final widgetsList = jsonData['widgets'];
-      if (widgetsList is List) {
-        return widgetsList;
+      final widgets = jsonData['widgets'];
+      if (widgets is Map) {
+        try {
+          return widgets.cast<String, String>();
+        } catch (e) {
+          log("Error: 'widgets' map contains non-string values. Details: $e");
+          return {};
+        }
       } else {
-        log("Error: The 'widgets' key does not contain a List.");
-        return [];
+        log("Error: The 'widgets' key does not contain a Map.");
+        return {};
       }
     } else {
-      log("Error: Invalid JSON format.");
-      return [];
+      log("Error: Invalid JSON format or missing 'widgets' key.");
+      return {};
     }
   } catch (e) {
     log("Error reading or parsing JSON file: $e");
-    return [];
+    return {};
   }
 }
 
