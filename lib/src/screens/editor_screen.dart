@@ -3,10 +3,11 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/widget_button.dart';
-import '../widgets/screen.dart';
 import '../widgets/screen_controller.dart';
 import '../helpers/database/json_loader.dart';
-import '../helpers/misc/virtual_widget.dart' as vw;
+// import '../helpers/misc/virtual_widget.dart' as vw;
+
+import '../widgets/screen_stack.dart';
 
 String? currentWidgetFocused;
 
@@ -60,33 +61,8 @@ class _EditorScreenState extends State<EditorScreen> {
                 Expanded(
                   flex: 12,
                   child: Center(
-                    child: Stack(
-                      children: [
-                        Screen(
-                          initialHeight: 500,
-                          initialWidth: 300,
-                          changedScreenSizeNotif: changeScreenSizeNotif,
-                        ),
-                        // TODO: onAccept : add widget data to a data structure
-                        // then refresh screen
-                        // TODO: on builder, instead of 'placeholder' add the
-                        // custom data structure so that it accepts widgets
-                        Positioned.fill(
-                          child: DragTarget<vw.VirtualWidget>(
-                            onAcceptWithDetails: (details) {
-                              print("Accepted: ${details.data.generateCode()}");
-                            },
-                            onWillAcceptWithDetails: (details) {
-                              print("Will accept: ${details.data}");
-                              return true;
-                            },
-                            builder: (context, candidateData, rejectedData) =>
-                                Placeholder(),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                      child: ScreenStack(
+                          changeScreenSizeNotif: changeScreenSizeNotif)),
                 )
               ],
             ),
