@@ -6,6 +6,10 @@ extension Parse on WidgetType {
   }
 }
 
+WidgetType fromStr(String str) {
+  return WidgetType.values.byName(str);
+}
+
 const List<WidgetType> childrenList = [WidgetType.row, WidgetType.column];
 
 class VirtualWidget {
@@ -16,7 +20,7 @@ class VirtualWidget {
   // Generates code for a given widget type based on some parameters
   String generateCode() {
     String defaultChildType = "child";
-    
+
     // ? Testing this variable (default -> empty)
     List<String> specialCases = ["mainAxisAlignment: MainAxisAlignment.center"];
 
@@ -29,6 +33,6 @@ class VirtualWidget {
 }
 
 // Testing the above code
-void main() {
-  print(VirtualWidget(WidgetType.row).generateCode());
-}
+// void main() {
+//   print(fromStr("button"));
+// }
