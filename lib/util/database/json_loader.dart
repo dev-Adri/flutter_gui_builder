@@ -2,6 +2,14 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:developer';
 
+/// Reads a JSON file from the given path and returns a map of widgets.
+///
+/// The JSON file must contain a top-level key 'widgets' which maps to a map of strings.
+/// If the file cannot be read or parsed, an empty map is returned.
+///
+/// [path] The path to the JSON file.
+///
+/// Returns a map of widget names to widget data.
 Future<Map<String, String>> getWidgets(String path) async {
   try {
     final file = File(path);

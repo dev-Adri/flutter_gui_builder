@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'screen.dart';
-import '../helpers/misc/virtual_widget.dart' as vw;
+import '../models/virtual_widget.dart' as vw;
 
+/// A widget that represents the screen stack.
 class ScreenStack extends StatefulWidget {
+  /// A callback function that takes the width and height of the screen as strings.
   final Function(String, String) changeScreenSizeNotif;
 
   const ScreenStack({super.key, required this.changeScreenSizeNotif});

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../helpers/misc/virtual_widget.dart' as vw;
+import '../models/virtual_widget.dart' as vw;
 
+/// A custom widget button that can be dragged and dropped.
 class WidgetButton extends StatefulWidget {
   final String name;
   final String id;
